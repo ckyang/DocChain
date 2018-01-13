@@ -5,6 +5,7 @@
 //  Created by Chung-kaiYang on 01/13/18.
 //
 
+#include <iostream>
 #include <assert.h>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QScrollArea>
@@ -33,8 +34,6 @@ dialog::dialog(QWidget *parent, QApplication* app)
 //    m_loadingMovie = new QMovie(":/image/loading.gif");
     m_tickPix = new QPixmap(QCoreApplication::applicationDirPath() + "/tick.png");
 
-//    connect(m_addBlockButton, SIGNAL(clicked()), this, SLOT(verifyBlock()));
-
     m_blockChainListLayout = new QVBoxLayout(this);
     m_blockChainTitleLabel = new QLabel("Address: []");
     m_docArea = new QTextEdit("Empty");
@@ -43,7 +42,8 @@ dialog::dialog(QWidget *parent, QApplication* app)
     m_blockChainListLayout->addWidget(m_docArea);
     m_blockChainListLayout->setStretch(0, 1);
     m_blockChainListLayout->setStretch(1, 10);
-    
+    connect(m_docArea, SIGNAL(textChanged()), this, SLOT(modifyDoc()));
+
     m_logLabel = new QLabel("QT initialized.");
     m_logLabel->setStyleSheet("QLabel { background-color:transparent; color : lime; }");
     m_logScrollArea = new QScrollArea;
@@ -87,8 +87,11 @@ dialog::~dialog()
     delete(m_controller);
 }
 
-void dialog::verifyBlock()
+void dialog::modifyDoc()
 {
+    //TBD
+    cout << m_docArea->textCursor().position() << endl;
+    cout << m_docArea->toPlainText().toUtf8().constData()[m_docArea->textCursor().position() - 1] << endl;
 /*
 //    m_addBlockLabel->setMovie(m_loadingMovie);
 //    m_loadingMovie->start();

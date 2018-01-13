@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_dialog_t {
     QByteArrayData data[14];
-    char stringdata0[193];
+    char stringdata0[191];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -44,7 +44,7 @@ QT_MOC_LITERAL(9, 91, 15), // "handleAppendLog"
 QT_MOC_LITERAL(10, 107, 26), // "handleUpdateBlockChainList"
 QT_MOC_LITERAL(11, 134, 26), // "handleAccumulateValidation"
 QT_MOC_LITERAL(12, 161, 19), // "handleUpdateAddress"
-QT_MOC_LITERAL(13, 181, 11) // "verifyBlock"
+QT_MOC_LITERAL(13, 181, 9) // "modifyDoc"
 
     },
     "dialog\0appendLog\0\0log\0updateBlockChainList\0"
@@ -52,7 +52,7 @@ QT_MOC_LITERAL(13, 181, 11) // "verifyBlock"
     "address\0handleAppendLog\0"
     "handleUpdateBlockChainList\0"
     "handleAccumulateValidation\0"
-    "handleUpdateAddress\0verifyBlock"
+    "handleUpdateAddress\0modifyDoc"
 };
 #undef QT_MOC_LITERAL
 
@@ -112,7 +112,7 @@ void dialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 5: _t->handleUpdateBlockChainList(); break;
         case 6: _t->handleAccumulateValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 7: _t->handleUpdateAddress((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 8: _t->verifyBlock(); break;
+        case 8: _t->modifyDoc(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

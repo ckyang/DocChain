@@ -38,6 +38,7 @@ public:
 
 signals:
     void appendLog(const QString& log);
+    //Need to be changed to updateDoc(const QString& message);
     void updateBlockChainList();
     void accumulateValidation(const QString& hash);
     void updateAddress(const QString& address);
@@ -50,7 +51,7 @@ public slots:
     void handleUpdateAddress(const QString& address);
 
 private slots:
-    void verifyBlock();
+    void modifyDoc();
 
 private:
     QLabel *m_blockChainTitleLabel, *m_logLabel;
