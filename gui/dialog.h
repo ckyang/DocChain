@@ -21,10 +21,9 @@ class QGridLayout;
 class QLabel;
 class QHBoxLayout;
 class QVBoxLayout;
-class QPushButton;
-class QLineEdit;
 class QPixmap;
 class QPMovie;
+class QTextEdit;
 class dialog_controller;
 class block;
 
@@ -54,14 +53,12 @@ private slots:
     void verifyBlock();
 
 private:
-    QLabel *m_addBlockLabel, *m_blockChainTitleLabel, *m_blockChainListLabel, *m_logLabel;
+    QLabel *m_blockChainTitleLabel, *m_logLabel;
+    QTextEdit *m_docArea;
     QApplication *m_app;
     QGridLayout *m_mainLayout;
-    QHBoxLayout *m_addBlockLayout;
     QVBoxLayout *m_blockChainListLayout;
-    QScrollArea *m_logScrollArea, *m_blockChainScrollArea;
-    QPushButton *m_addBlockButton;
-    QLineEdit *m_addBlockNameEdit;
+    QScrollArea *m_logScrollArea;
     QMovie *m_loadingMovie;
     QPixmap *m_tickPix;
     unordered_map<string, pair<int, block*>> m_validatingBlockHash;

@@ -11,8 +11,7 @@
 #include <QtWidgets/QScrollBar>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QTextEdit>
 #include <QtGui/QPixmap>
 #include <QtGui/QMovie>
 #include "dialog.h"
@@ -34,27 +33,14 @@ dialog::dialog(QWidget *parent, QApplication* app)
 //    m_loadingMovie = new QMovie(":/image/loading.gif");
     m_tickPix = new QPixmap(QCoreApplication::applicationDirPath() + "/tick.png");
 
-    m_addBlockLayout = new QHBoxLayout(this);
-    m_addBlockButton = new QPushButton("+Block", this);
-    m_addBlockNameEdit = new QLineEdit(this);
-    m_addBlockLabel = new QLabel("");
-
-    m_addBlockLayout->addWidget(m_addBlockButton);
-    m_addBlockLayout->addWidget(m_addBlockNameEdit);
-    m_addBlockLayout->addWidget(m_addBlockLabel);
-    m_addBlockLayout->setStretchFactor(m_addBlockButton, 1);
-    m_addBlockLayout->setStretchFactor(m_addBlockNameEdit, 999);
-    m_addBlockLayout->setStretchFactor(m_addBlockLabel, 1);
-    connect(m_addBlockButton, SIGNAL(clicked()), this, SLOT(verifyBlock()));
+//    connect(m_addBlockButton, SIGNAL(clicked()), this, SLOT(verifyBlock()));
 
     m_blockChainListLayout = new QVBoxLayout(this);
     m_blockChainTitleLabel = new QLabel("Address: []");
-    m_blockChainListLabel = new QLabel("Empty");
-    m_blockChainScrollArea = new QScrollArea;
-    m_blockChainScrollArea->setStyleSheet("background-color:lightcyan;");
-    m_blockChainScrollArea->setWidget(m_blockChainListLabel);
+    m_docArea = new QTextEdit("Empty");
+    m_docArea->setStyleSheet("color:white; background-color:#995599; font:italic");
     m_blockChainListLayout->addWidget(m_blockChainTitleLabel);
-    m_blockChainListLayout->addWidget(m_blockChainScrollArea);
+    m_blockChainListLayout->addWidget(m_docArea);
     m_blockChainListLayout->setStretch(0, 1);
     m_blockChainListLayout->setStretch(1, 10);
     
@@ -65,11 +51,9 @@ dialog::dialog(QWidget *parent, QApplication* app)
     m_logScrollArea->resize (5, 5);
     m_logScrollArea->setWidget(m_logLabel);
 
-    m_mainLayout->addLayout(m_addBlockLayout, 0, 0);
     m_mainLayout->addLayout(m_blockChainListLayout, 1, 0);
     m_mainLayout->addWidget(m_logScrollArea, 2, 0);
-    m_mainLayout->setRowStretch(0, 1);
-    m_mainLayout->setRowStretch(1, 7);
+    m_mainLayout->setRowStretch(1, 8);
     m_mainLayout->setRowStretch(2, 2);
 
     m_controller = new dialog_controller();
@@ -91,14 +75,9 @@ dialog::dialog(QWidget *parent, QApplication* app)
 dialog::~dialog()
 {
     delete(m_mainLayout);
-    delete(m_addBlockLayout);
     delete(m_blockChainListLayout);
-    delete(m_addBlockButton);
-    delete(m_addBlockNameEdit);
-    delete(m_addBlockLabel);
     delete(m_blockChainTitleLabel);
-    delete(m_blockChainListLabel);
-    delete(m_blockChainScrollArea);
+    delete(m_docArea);
     delete(m_logLabel);
     delete(m_logScrollArea);
     delete(m_loadingMovie);
@@ -110,6 +89,7 @@ dialog::~dialog()
 
 void dialog::verifyBlock()
 {
+/*
 //    m_addBlockLabel->setMovie(m_loadingMovie);
 //    m_loadingMovie->start();
 
@@ -118,6 +98,7 @@ void dialog::verifyBlock()
     m_validatingBlockHash[newBlock->getHash()] = make_pair(0, newBlock);
     talk::Broadcast(string(REMOTE_COMMAND_ASK_VERIFY) + " " + newBlock->getBlockInfo());
     m_addBlockNameEdit->clear();
+*/
 }
 
 void dialog::handleAccumulateValidation(const QString& hash)
@@ -133,22 +114,22 @@ void dialog::handleAccumulateValidation(const QString& hash)
         factory::GetBlockChain()->addBlock(m_validatingBlockHash[curHash].second);
         m_validatingBlockHash.erase(curHash);
         updateBlockChainList();
-        m_addBlockLabel->setText("OK!");
+//        m_addBlockLabel->setText("OK!");
         talk::Broadcast(string(REMOTE_COMMAND_NEW) + " " + factory::GetBlockChain()->getLatestBlock()->getBlockInfo());
         //    m_addBlockLabel->setPixmap(*m_tickPix);
     }
-    else
-        m_addBlockLabel->setText(QString("+").append(to_string(m_validatingBlockHash[curHash].first).c_str()));
+//    else
+//        m_addBlockLabel->setText(QString("+").append(to_string(m_validatingBlockHash[curHash].first).c_str()));
 }
 
 void dialog::handleUpdateBlockChainList()
 {
-    m_blockChainListLabel->setText(factory::GetBlockChain()->getChainInfo(true).c_str());
-    m_blockChainListLabel->adjustSize();
-    m_blockChainScrollArea->widget()->resize(m_blockChainScrollArea->widget()->sizeHint());
+    m_docArea->setText(factory::GetBlockChain()->getChainInfo(true).c_str());
+    m_docArea->adjustSize();
+//    m_blockChainScrollArea->widget()->resize(m_blockChainScrollArea->widget()->sizeHint());
     m_app->processEvents();
-    m_blockChainScrollArea->verticalScrollBar()->setValue(m_blockChainScrollArea->verticalScrollBar()->minimum());
-    m_blockChainScrollArea->horizontalScrollBar()->setValue(m_blockChainScrollArea->horizontalScrollBar()->minimum());
+//    m_blockChainScrollArea->verticalScrollBar()->setValue(m_blockChainScrollArea->verticalScrollBar()->minimum());
+//    m_blockChainScrollArea->horizontalScrollBar()->setValue(m_blockChainScrollArea->horizontalScrollBar()->minimum());
 }
 
 void dialog::handleAppendLog(const QString& log)

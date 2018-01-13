@@ -105,16 +105,14 @@ dependencies: /Users/CK-Yang/GitHub/DocChain/gui/dialog.cpp \
   ../../Qt/5.10.0/ios/include/QtWidgets/qboxlayout.h \
   ../../Qt/5.10.0/ios/include/QtWidgets/QLabel \
   ../../Qt/5.10.0/ios/include/QtWidgets/qlabel.h \
-  ../../Qt/5.10.0/ios/include/QtWidgets/QPushButton \
-  ../../Qt/5.10.0/ios/include/QtWidgets/qpushbutton.h \
-  ../../Qt/5.10.0/ios/include/QtWidgets/qabstractbutton.h \
-  ../../Qt/5.10.0/ios/include/QtGui/qicon.h \
-  ../../Qt/5.10.0/ios/include/QtWidgets/QLineEdit \
-  ../../Qt/5.10.0/ios/include/QtWidgets/qlineedit.h \
+  ../../Qt/5.10.0/ios/include/QtWidgets/QTextEdit \
+  ../../Qt/5.10.0/ios/include/QtWidgets/qtextedit.h \
+  ../../Qt/5.10.0/ios/include/QtGui/qtextdocument.h \
+  ../../Qt/5.10.0/ios/include/QtCore/qurl.h \
+  ../../Qt/5.10.0/ios/include/QtGui/qtextoption.h \
   ../../Qt/5.10.0/ios/include/QtGui/qtextcursor.h \
   ../../Qt/5.10.0/ios/include/QtGui/qtextformat.h \
   ../../Qt/5.10.0/ios/include/QtGui/qpen.h \
-  ../../Qt/5.10.0/ios/include/QtGui/qtextoption.h \
   ../../Qt/5.10.0/ios/include/QtGui/QPixmap \
   ../../Qt/5.10.0/ios/include/QtGui/QMovie \
   ../../Qt/5.10.0/ios/include/QtGui/qmovie.h \
