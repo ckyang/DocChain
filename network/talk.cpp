@@ -52,7 +52,7 @@ void talk::Response(int sock_fd, short event, void *arg)
     }
 
     blockChain* blockChainObject = factory::GetBlockChain();
-
+/*
     //ASK_VERIFY blockInfo
     if(StartWith(readBuf, len, REMOTE_COMMAND_ASK_VERIFY))
     {
@@ -90,7 +90,7 @@ void talk::Response(int sock_fd, short event, void *arg)
         factory::GetDialog()->accumulateValidation(QString(hash.c_str()));
         return;
     }
-
+*/
     //NEW blockInfo
     if(StartWith(readBuf, len, REMOTE_COMMAND_NEW))
     {
@@ -105,7 +105,9 @@ void talk::Response(int sock_fd, short event, void *arg)
         if(blockChain::IsValidBlock(index, preHash, timeStamp, data, hash, blockChainObject->getLatestBlock()))
         {
             factory::GetBlockChain()->addBlock(new block(index, preHash, timeStamp, data, hash));
-            factory::GetDialog()->updateBlockChainList();
+            //TBD
+//            string command = dialog::GetCommand(dialog::DIALOG_COMMAND_TYPE_ADD, , );
+//            factory::GetDialog()->updateDoc(command.c_str());
         }
         else
         {
@@ -128,6 +130,7 @@ void talk::Response(int sock_fd, short event, void *arg)
     //GET_ALL
     if(StartWith(readBuf, len, REMOTE_COMMAND_GET_ALL))
     {
+        //TBD, should return current dialog doc content
         string writeBuf = string(REMOTE_COMMAND_REPLY_ALL) + " " + blockChainObject->getChainInfo();
         SendMsg(sock_fd, &client_addr, writeBuf);
         return;
@@ -152,7 +155,8 @@ void talk::Response(int sock_fd, short event, void *arg)
         if(newChain->length() > blockChainObject->length())
         {
             blockChainObject->replaceChain(newChain);
-            factory::GetDialog()->updateBlockChainList();
+            string command = dialog::GetCommand(dialog::DIALOG_COMMAND_TYPE_UPDATEALL, 0, tmp);
+            factory::GetDialog()->updateDoc(command.c_str());
         }
 
         delete newChain;

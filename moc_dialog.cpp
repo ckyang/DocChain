@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_dialog_t {
-    QByteArrayData data[14];
-    char stringdata0[191];
+    QByteArrayData data[15];
+    char stringdata0[177];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,22 +35,22 @@ QT_MOC_LITERAL(0, 0, 6), // "dialog"
 QT_MOC_LITERAL(1, 7, 9), // "appendLog"
 QT_MOC_LITERAL(2, 17, 0), // ""
 QT_MOC_LITERAL(3, 18, 3), // "log"
-QT_MOC_LITERAL(4, 22, 20), // "updateBlockChainList"
-QT_MOC_LITERAL(5, 43, 20), // "accumulateValidation"
-QT_MOC_LITERAL(6, 64, 4), // "hash"
-QT_MOC_LITERAL(7, 69, 13), // "updateAddress"
-QT_MOC_LITERAL(8, 83, 7), // "address"
-QT_MOC_LITERAL(9, 91, 15), // "handleAppendLog"
-QT_MOC_LITERAL(10, 107, 26), // "handleUpdateBlockChainList"
-QT_MOC_LITERAL(11, 134, 26), // "handleAccumulateValidation"
-QT_MOC_LITERAL(12, 161, 19), // "handleUpdateAddress"
-QT_MOC_LITERAL(13, 181, 9) // "modifyDoc"
+QT_MOC_LITERAL(4, 22, 9), // "updateDoc"
+QT_MOC_LITERAL(5, 32, 7), // "command"
+QT_MOC_LITERAL(6, 40, 20), // "accumulateValidation"
+QT_MOC_LITERAL(7, 61, 4), // "hash"
+QT_MOC_LITERAL(8, 66, 13), // "updateAddress"
+QT_MOC_LITERAL(9, 80, 7), // "address"
+QT_MOC_LITERAL(10, 88, 15), // "handleAppendLog"
+QT_MOC_LITERAL(11, 104, 15), // "handleUpdateDoc"
+QT_MOC_LITERAL(12, 120, 26), // "handleAccumulateValidation"
+QT_MOC_LITERAL(13, 147, 19), // "handleUpdateAddress"
+QT_MOC_LITERAL(14, 167, 9) // "modifyDoc"
 
     },
-    "dialog\0appendLog\0\0log\0updateBlockChainList\0"
+    "dialog\0appendLog\0\0log\0updateDoc\0command\0"
     "accumulateValidation\0hash\0updateAddress\0"
-    "address\0handleAppendLog\0"
-    "handleUpdateBlockChainList\0"
+    "address\0handleAppendLog\0handleUpdateDoc\0"
     "handleAccumulateValidation\0"
     "handleUpdateAddress\0modifyDoc"
 };
@@ -71,28 +71,28 @@ static const uint qt_meta_data_dialog[] = {
 
  // signals: name, argc, parameters, tag, flags
        1,    1,   59,    2, 0x06 /* Public */,
-       4,    0,   62,    2, 0x06 /* Public */,
-       5,    1,   63,    2, 0x06 /* Public */,
-       7,    1,   66,    2, 0x06 /* Public */,
+       4,    1,   62,    2, 0x06 /* Public */,
+       6,    1,   65,    2, 0x06 /* Public */,
+       8,    1,   68,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       9,    1,   69,    2, 0x0a /* Public */,
-      10,    0,   72,    2, 0x0a /* Public */,
-      11,    1,   73,    2, 0x0a /* Public */,
-      12,    1,   76,    2, 0x0a /* Public */,
-      13,    0,   79,    2, 0x08 /* Private */,
+      10,    1,   71,    2, 0x0a /* Public */,
+      11,    1,   74,    2, 0x0a /* Public */,
+      12,    1,   77,    2, 0x0a /* Public */,
+      13,    1,   80,    2, 0x0a /* Public */,
+      14,    0,   83,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,    6,
-    QMetaType::Void, QMetaType::QString,    8,
+    QMetaType::Void, QMetaType::QString,    5,
+    QMetaType::Void, QMetaType::QString,    7,
+    QMetaType::Void, QMetaType::QString,    9,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QString,    2,
-    QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    2,
-    QMetaType::Void, QMetaType::QString,    8,
+    QMetaType::Void, QMetaType::QString,    2,
+    QMetaType::Void, QMetaType::QString,    9,
     QMetaType::Void,
 
        0        // eod
@@ -105,11 +105,11 @@ void dialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->appendLog((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 1: _t->updateBlockChainList(); break;
+        case 1: _t->updateDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 2: _t->accumulateValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 3: _t->updateAddress((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 4: _t->handleAppendLog((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 5: _t->handleUpdateBlockChainList(); break;
+        case 5: _t->handleUpdateDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 6: _t->handleAccumulateValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 7: _t->handleUpdateAddress((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 8: _t->modifyDoc(); break;
@@ -125,8 +125,8 @@ void dialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
             }
         }
         {
-            typedef void (dialog::*_t)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&dialog::updateBlockChainList)) {
+            typedef void (dialog::*_t)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&dialog::updateDoc)) {
                 *result = 1;
                 return;
             }
@@ -192,9 +192,10 @@ void dialog::appendLog(const QString & _t1)
 }
 
 // SIGNAL 1
-void dialog::updateBlockChainList()
+void dialog::updateDoc(const QString & _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
@@ -211,8 +212,8 @@ void dialog::updateAddress(const QString & _t1)
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 struct qt_meta_stringdata_dialog_controller_t {
-    QByteArrayData data[13];
-    char stringdata0[240];
+    QByteArrayData data[14];
+    char stringdata0[226];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -225,22 +226,23 @@ QT_MOC_LITERAL(0, 0, 17), // "dialog_controller"
 QT_MOC_LITERAL(1, 18, 20), // "resultReadyAppendLog"
 QT_MOC_LITERAL(2, 39, 0), // ""
 QT_MOC_LITERAL(3, 40, 3), // "log"
-QT_MOC_LITERAL(4, 44, 31), // "resultReadyUpdateBlockChainList"
-QT_MOC_LITERAL(5, 76, 31), // "resultReadyAccumulateValidation"
-QT_MOC_LITERAL(6, 108, 4), // "hash"
-QT_MOC_LITERAL(7, 113, 24), // "resultReadyUpdateAddress"
-QT_MOC_LITERAL(8, 138, 7), // "address"
-QT_MOC_LITERAL(9, 146, 16), // "operateAppendLog"
-QT_MOC_LITERAL(10, 163, 27), // "operateUpdateBlockChainList"
-QT_MOC_LITERAL(11, 191, 27), // "operateAccumulateValidation"
-QT_MOC_LITERAL(12, 219, 20) // "operateUpdateAddress"
+QT_MOC_LITERAL(4, 44, 20), // "resultReadyUpdateDoc"
+QT_MOC_LITERAL(5, 65, 7), // "command"
+QT_MOC_LITERAL(6, 73, 31), // "resultReadyAccumulateValidation"
+QT_MOC_LITERAL(7, 105, 4), // "hash"
+QT_MOC_LITERAL(8, 110, 24), // "resultReadyUpdateAddress"
+QT_MOC_LITERAL(9, 135, 7), // "address"
+QT_MOC_LITERAL(10, 143, 16), // "operateAppendLog"
+QT_MOC_LITERAL(11, 160, 16), // "operateUpdateDoc"
+QT_MOC_LITERAL(12, 177, 27), // "operateAccumulateValidation"
+QT_MOC_LITERAL(13, 205, 20) // "operateUpdateAddress"
 
     },
     "dialog_controller\0resultReadyAppendLog\0"
-    "\0log\0resultReadyUpdateBlockChainList\0"
+    "\0log\0resultReadyUpdateDoc\0command\0"
     "resultReadyAccumulateValidation\0hash\0"
     "resultReadyUpdateAddress\0address\0"
-    "operateAppendLog\0operateUpdateBlockChainList\0"
+    "operateAppendLog\0operateUpdateDoc\0"
     "operateAccumulateValidation\0"
     "operateUpdateAddress"
 };
@@ -261,27 +263,27 @@ static const uint qt_meta_data_dialog_controller[] = {
 
  // signals: name, argc, parameters, tag, flags
        1,    1,   54,    2, 0x06 /* Public */,
-       4,    0,   57,    2, 0x06 /* Public */,
-       5,    1,   58,    2, 0x06 /* Public */,
-       7,    1,   61,    2, 0x06 /* Public */,
+       4,    1,   57,    2, 0x06 /* Public */,
+       6,    1,   60,    2, 0x06 /* Public */,
+       8,    1,   63,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       9,    1,   64,    2, 0x0a /* Public */,
-      10,    0,   67,    2, 0x0a /* Public */,
-      11,    1,   68,    2, 0x0a /* Public */,
-      12,    1,   71,    2, 0x0a /* Public */,
+      10,    1,   66,    2, 0x0a /* Public */,
+      11,    1,   69,    2, 0x0a /* Public */,
+      12,    1,   72,    2, 0x0a /* Public */,
+      13,    1,   75,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,    6,
-    QMetaType::Void, QMetaType::QString,    8,
+    QMetaType::Void, QMetaType::QString,    5,
+    QMetaType::Void, QMetaType::QString,    7,
+    QMetaType::Void, QMetaType::QString,    9,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QString,    3,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::QString,    6,
-    QMetaType::Void, QMetaType::QString,    8,
+    QMetaType::Void, QMetaType::QString,    5,
+    QMetaType::Void, QMetaType::QString,    7,
+    QMetaType::Void, QMetaType::QString,    9,
 
        0        // eod
 };
@@ -293,11 +295,11 @@ void dialog_controller::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->resultReadyAppendLog((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 1: _t->resultReadyUpdateBlockChainList(); break;
+        case 1: _t->resultReadyUpdateDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 2: _t->resultReadyAccumulateValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 3: _t->resultReadyUpdateAddress((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 4: _t->operateAppendLog((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 5: _t->operateUpdateBlockChainList(); break;
+        case 5: _t->operateUpdateDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 6: _t->operateAccumulateValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 7: _t->operateUpdateAddress((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
@@ -312,8 +314,8 @@ void dialog_controller::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
             }
         }
         {
-            typedef void (dialog_controller::*_t)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&dialog_controller::resultReadyUpdateBlockChainList)) {
+            typedef void (dialog_controller::*_t)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&dialog_controller::resultReadyUpdateDoc)) {
                 *result = 1;
                 return;
             }
@@ -379,9 +381,10 @@ void dialog_controller::resultReadyAppendLog(const QString & _t1)
 }
 
 // SIGNAL 1
-void dialog_controller::resultReadyUpdateBlockChainList()
+void dialog_controller::resultReadyUpdateDoc(const QString & _t1)
 {
-    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2

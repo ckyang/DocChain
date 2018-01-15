@@ -63,7 +63,7 @@ dialog::dialog(QWidget *parent, QApplication* app)
     connect(this, SIGNAL(appendLog(QString)), m_controller, SLOT(operateAppendLog(QString)));
     connect(m_controller, SIGNAL(resultReadyAppendLog(QString)), this, SLOT(handleAppendLog(QString)));
     connect(this, SIGNAL(updateBlockChainList()), m_controller, SLOT(operateUpdateBlockChainList()));
-    connect(m_controller, SIGNAL(resultReadyUpdateBlockChainList()), this, SLOT(handleUpdateBlockChainList()));
+    connect(m_controller, SIGNAL(resultReadyUpdateDoc(QString)), this, SLOT(handleUpdateDoc(QString)));
     connect(this, SIGNAL(accumulateValidation(QString)), m_controller, SLOT(operateAccumulateValidation(QString)));
     connect(m_controller, SIGNAL(resultReadyAccumulateValidation(QString)), this, SLOT(handleAccumulateValidation(QString)));
     connect(this, SIGNAL(updateAddress(QString)), m_controller, SLOT(operateUpdateAddress(QString)));
@@ -89,9 +89,17 @@ dialog::~dialog()
 
 void dialog::modifyDoc()
 {
-    //TBD
-    cout << m_docArea->textCursor().position() << endl;
-    cout << m_docArea->toPlainText().toUtf8().constData()[m_docArea->textCursor().position() - 1] << endl;
+    if(m_docArea->toPlainText().length() == m_preDocSize)
+        return;
+    
+    string message = GetCommand((m_docArea->toPlainText().length() > m_preDocSize) ? DIALOG_COMMAND_TYPE_ADD : DIALOG_COMMAND_TYPE_REMOVE, m_docArea->textCursor().position(), string(1, m_docArea->toPlainText().toUtf8().constData()[m_docArea->textCursor().position() - 1]));
+
+    blockChain* blockchain = factory::GetBlockChain();
+    blockchain->addBlock(blockchain->generateNextBlock(message));
+//    m_validatingBlockHash[newBlock->getHash()] = make_pair(0, newBlock);
+    talk::Broadcast(string(REMOTE_COMMAND_NEW) + " " + blockchain->getLatestBlock()->getBlockInfo());
+
+    m_preDocSize = m_docArea->toPlainText().length();
 /*
 //    m_addBlockLabel->setMovie(m_loadingMovie);
 //    m_loadingMovie->start();
@@ -106,6 +114,7 @@ void dialog::modifyDoc()
 
 void dialog::handleAccumulateValidation(const QString& hash)
 {
+/*
     string curHash = hash.toUtf8().constData();
     if(m_validatingBlockHash.find(curHash) == m_validatingBlockHash.end())
         return;
@@ -123,9 +132,10 @@ void dialog::handleAccumulateValidation(const QString& hash)
     }
 //    else
 //        m_addBlockLabel->setText(QString("+").append(to_string(m_validatingBlockHash[curHash].first).c_str()));
+*/
 }
 
-void dialog::handleUpdateBlockChainList()
+void dialog::handleUpdateDoc(const QString& command)
 {
     m_docArea->setText(factory::GetBlockChain()->getChainInfo(true).c_str());
     m_docArea->adjustSize();
@@ -150,14 +160,53 @@ void dialog::handleUpdateAddress(const QString& address)
     m_blockChainTitleLabel->setText(QString("Address: [").append(address).append("]"));
 }
 
+string dialog::GetCommand(DIALOG_COMMAND_TYPE type, int position, string msg)
+{
+    static char message[10], lenHex[4] = {'0'};
+    memset(message, '\0', 10);
+    talk::ItoHex(position, lenHex);
+    memcpy(message + 1, lenHex, 4);
+
+    switch(type)
+    {
+        case DIALOG_COMMAND_TYPE_ADD:
+        {
+            message[0] = '+';
+            break;
+        }
+
+        case DIALOG_COMMAND_TYPE_REMOVE:
+        {
+            message[0] = '-';
+            break;
+        }
+
+        case DIALOG_COMMAND_TYPE_UPDATEALL:
+        {
+            message[0] = '*';
+            break;
+        }
+        
+        default:
+            break;
+    }
+
+    return string(message) + msg;
+}
+
+void dialog::RetrieveCommand(const string& command, DIALOG_COMMAND_TYPE& type, int& position, string& msg)
+{
+    //TBD
+}
+
 void dialog_controller::operateAppendLog(const QString& log)
 {
     emit resultReadyAppendLog(log);
 }
 
-void dialog_controller::operateUpdateBlockChainList()
+void dialog_controller::operateUpdateDoc(const QString& command)
 {
-    emit resultReadyUpdateBlockChainList();
+    emit resultReadyUpdateDoc(command);
 }
 
 void dialog_controller::operateAccumulateValidation(const QString& hash)

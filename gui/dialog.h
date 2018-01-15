@@ -33,20 +33,33 @@ class dialog : public QDialog
     QThread workerThread;
 
 public:
+    enum DIALOG_COMMAND_TYPE
+    {
+        DIALOG_COMMAND_TYPE_ADD = 0,
+        DIALOG_COMMAND_TYPE_REMOVE = 1,
+        DIALOG_COMMAND_TYPE_UPDATEALL = 2,
+    };
+
     dialog(QWidget *parent = 0, QApplication* app = 0);
     ~dialog();
 
+    //Command Format: [MODE][POSITION][Message]
+    //MODE(1): "+", "-", "*": Indicate add(+), remove(-), or updateAll(*)
+    //POSITION(4): (0000 ~ FFFF) Indicate add/remove location
+    //Message(-): Add/remove/all message
+    static string GetCommand(DIALOG_COMMAND_TYPE type, int position, string msg);
+    static void RetrieveCommand(const string& command, DIALOG_COMMAND_TYPE& type, int& position, string& msg);
+
 signals:
     void appendLog(const QString& log);
-    //Need to be changed to updateDoc(const QString& message);
-    void updateBlockChainList();
+    void updateDoc(const QString& command);
     void accumulateValidation(const QString& hash);
     void updateAddress(const QString& address);
 
 // Below functions are Qt internal only, don't call them directly.
 public slots:
     void handleAppendLog(const QString &);
-    void handleUpdateBlockChainList();
+    void handleUpdateDoc(const QString&);
     void handleAccumulateValidation(const QString&);
     void handleUpdateAddress(const QString& address);
 
@@ -63,6 +76,7 @@ private:
     QMovie *m_loadingMovie;
     QPixmap *m_tickPix;
     unordered_map<string, pair<int, block*>> m_validatingBlockHash;
+    int m_preDocSize;
 
     dialog_controller *m_controller;
 };
@@ -74,13 +88,13 @@ class dialog_controller : public QObject
     
 public slots:
     void operateAppendLog(const QString& log);
-    void operateUpdateBlockChainList();
+    void operateUpdateDoc(const QString& command);
     void operateAccumulateValidation(const QString& hash);
     void operateUpdateAddress(const QString& address);
 
 signals:
     void resultReadyAppendLog(const QString& log);
-    void resultReadyUpdateBlockChainList();
+    void resultReadyUpdateDoc(const QString& command);
     void resultReadyAccumulateValidation(const QString& hash);
     void resultReadyUpdateAddress(const QString& address);
 };
