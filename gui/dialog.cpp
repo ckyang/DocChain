@@ -36,7 +36,7 @@ dialog::dialog(QWidget *parent, QApplication* app)
 
     m_blockChainListLayout = new QVBoxLayout(this);
     m_blockChainTitleLabel = new QLabel("Address: []");
-    m_docArea = new QTextEdit("Empty");
+    m_docArea = new QTextEdit("");
     m_docArea->setStyleSheet("color:white; background-color:#995599; font:italic");
     m_blockChainListLayout->addWidget(m_blockChainTitleLabel);
     m_blockChainListLayout->addWidget(m_docArea);
@@ -62,7 +62,7 @@ dialog::dialog(QWidget *parent, QApplication* app)
 
     connect(this, SIGNAL(appendLog(QString)), m_controller, SLOT(operateAppendLog(QString)));
     connect(m_controller, SIGNAL(resultReadyAppendLog(QString)), this, SLOT(handleAppendLog(QString)));
-    connect(this, SIGNAL(updateBlockChainList()), m_controller, SLOT(operateUpdateBlockChainList()));
+    connect(this, SIGNAL(updateDoc(QString)), m_controller, SLOT(operateUpdateDoc(QString)));
     connect(m_controller, SIGNAL(resultReadyUpdateDoc(QString)), this, SLOT(handleUpdateDoc(QString)));
     connect(this, SIGNAL(accumulateValidation(QString)), m_controller, SLOT(operateAccumulateValidation(QString)));
     connect(m_controller, SIGNAL(resultReadyAccumulateValidation(QString)), this, SLOT(handleAccumulateValidation(QString)));
@@ -137,12 +137,50 @@ void dialog::handleAccumulateValidation(const QString& hash)
 
 void dialog::handleUpdateDoc(const QString& command)
 {
+    DIALOG_COMMAND_TYPE type;
+    int position;
+    string msg;
+
+    RetrieveCommand(command.toUtf8().constData(), type, position, msg);
+
+    switch(type)
+    {
+        case DIALOG_COMMAND_TYPE_ADD:
+        {
+            QTextCursor cursor = m_docArea->textCursor();
+            cursor.setPosition(position - 1);
+            m_docArea->setTextCursor(cursor);
+            m_docArea->insertPlainText(msg.c_str());
+            break;
+        }
+
+        case DIALOG_COMMAND_TYPE_REMOVE:
+        {
+            QTextCursor cursor = m_docArea->textCursor();
+            cursor.setPosition(position + 1);
+            m_docArea->setTextCursor(cursor);
+            m_docArea->textCursor().deletePreviousChar();
+            break;
+        }
+            
+        case DIALOG_COMMAND_TYPE_UPDATEALL:
+        {
+            m_docArea->setText(msg.c_str());
+            break;
+        }
+            
+        default:
+            break;
+    }
+
+/*
     m_docArea->setText(factory::GetBlockChain()->getChainInfo(true).c_str());
     m_docArea->adjustSize();
 //    m_blockChainScrollArea->widget()->resize(m_blockChainScrollArea->widget()->sizeHint());
     m_app->processEvents();
 //    m_blockChainScrollArea->verticalScrollBar()->setValue(m_blockChainScrollArea->verticalScrollBar()->minimum());
 //    m_blockChainScrollArea->horizontalScrollBar()->setValue(m_blockChainScrollArea->horizontalScrollBar()->minimum());
+*/
 }
 
 void dialog::handleAppendLog(const QString& log)
@@ -196,7 +234,29 @@ string dialog::GetCommand(DIALOG_COMMAND_TYPE type, int position, string msg)
 
 void dialog::RetrieveCommand(const string& command, DIALOG_COMMAND_TYPE& type, int& position, string& msg)
 {
-    //TBD
+    switch(command[0])
+    {
+        case '+':
+        {
+            type = DIALOG_COMMAND_TYPE_ADD;
+            break;
+        }
+        case '-':
+        {
+            type = DIALOG_COMMAND_TYPE_REMOVE;
+            break;
+        }
+        case '*':
+        {
+            type = DIALOG_COMMAND_TYPE_UPDATEALL;
+            break;
+        }
+        default:
+            break;
+    }
+
+    talk::HextoI(position, command.substr(1, 4).c_str());
+    msg = command.substr(5);
 }
 
 void dialog_controller::operateAppendLog(const QString& log)

@@ -89,9 +89,9 @@ static const uint qt_meta_data_dialog[] = {
     QMetaType::Void, QMetaType::QString,    9,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QString,    2,
-    QMetaType::Void, QMetaType::QString,    2,
-    QMetaType::Void, QMetaType::QString,    2,
+    QMetaType::Void, QMetaType::QString,    3,
+    QMetaType::Void, QMetaType::QString,    5,
+    QMetaType::Void, QMetaType::QString,    7,
     QMetaType::Void, QMetaType::QString,    9,
     QMetaType::Void,
 

@@ -102,17 +102,15 @@ void talk::Response(int sock_fd, short event, void *arg)
 
         //If this block (coming from remote) is valid, add this block.
         //If it's invalid, request the whole blockchain.
-        if(blockChain::IsValidBlock(index, preHash, timeStamp, data, hash, blockChainObject->getLatestBlock()))
+//        if(blockChain::IsValidBlock(index, preHash, timeStamp, data, hash, blockChainObject->getLatestBlock()))
         {
             factory::GetBlockChain()->addBlock(new block(index, preHash, timeStamp, data, hash));
-            //TBD
-//            string command = dialog::GetCommand(dialog::DIALOG_COMMAND_TYPE_ADD, , );
-//            factory::GetDialog()->updateDoc(command.c_str());
+            factory::GetDialog()->updateDoc(QString(data.c_str()));
         }
-        else
+//        else
         {
-            string writeBuf = REMOTE_COMMAND_GET_ALL;
-            SendMsg(sock_fd, &client_addr, writeBuf);
+//            string writeBuf = REMOTE_COMMAND_GET_ALL;
+//            SendMsg(sock_fd, &client_addr, writeBuf);
         }
 
         return;
@@ -130,7 +128,6 @@ void talk::Response(int sock_fd, short event, void *arg)
     //GET_ALL
     if(StartWith(readBuf, len, REMOTE_COMMAND_GET_ALL))
     {
-        //TBD, should return current dialog doc content
         string writeBuf = string(REMOTE_COMMAND_REPLY_ALL) + " " + blockChainObject->getChainInfo();
         SendMsg(sock_fd, &client_addr, writeBuf);
         return;
@@ -155,8 +152,9 @@ void talk::Response(int sock_fd, short event, void *arg)
         if(newChain->length() > blockChainObject->length())
         {
             blockChainObject->replaceChain(newChain);
-            string command = dialog::GetCommand(dialog::DIALOG_COMMAND_TYPE_UPDATEALL, 0, tmp);
-            factory::GetDialog()->updateDoc(command.c_str());
+            //TBD, retrieve each command and recover original article
+//            string command = dialog::GetCommand(dialog::DIALOG_COMMAND_TYPE_UPDATEALL, 0, tmp);
+//            factory::GetDialog()->updateDoc(command.c_str());
         }
 
         delete newChain;
@@ -258,7 +256,7 @@ void talk::Broadcast(const char* str, int len)
     SendMsg(sock_fd, &sock_in, str, len);
 
     factory::GetDialog()->appendLog("Message is broadcasted.");
-//    factory::GetDialog()->appendLog(message.c_str());
+//    factory::GetDialog()->appendLog(str);
 
     shutdown(sock_fd, 2);
     close(sock_fd);

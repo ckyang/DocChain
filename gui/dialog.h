@@ -58,9 +58,9 @@ signals:
 
 // Below functions are Qt internal only, don't call them directly.
 public slots:
-    void handleAppendLog(const QString &);
-    void handleUpdateDoc(const QString&);
-    void handleAccumulateValidation(const QString&);
+    void handleAppendLog(const QString& log);
+    void handleUpdateDoc(const QString& command);
+    void handleAccumulateValidation(const QString& hash);
     void handleUpdateAddress(const QString& address);
 
 private slots:
