@@ -32,7 +32,7 @@ public:
     block *getLatestBlock(){return tail;}
     block *getBlock(const string& hash){return blockHash[hash];}
     void replaceChain(blockChain * const chain);
-    string getChainInfo(const bool bWithTitle = false);
+    string getChainInfo();
 
 private:
     static string CalculateHash(const int index, const string& preHash, const time_t& timeStamp, const string& data);

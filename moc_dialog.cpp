@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_dialog_t {
     QByteArrayData data[15];
-    char stringdata0[177];
+    char stringdata0[191];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,24 +35,24 @@ QT_MOC_LITERAL(0, 0, 6), // "dialog"
 QT_MOC_LITERAL(1, 7, 9), // "appendLog"
 QT_MOC_LITERAL(2, 17, 0), // ""
 QT_MOC_LITERAL(3, 18, 3), // "log"
-QT_MOC_LITERAL(4, 22, 9), // "updateDoc"
-QT_MOC_LITERAL(5, 32, 7), // "command"
-QT_MOC_LITERAL(6, 40, 20), // "accumulateValidation"
-QT_MOC_LITERAL(7, 61, 4), // "hash"
-QT_MOC_LITERAL(8, 66, 13), // "updateAddress"
-QT_MOC_LITERAL(9, 80, 7), // "address"
-QT_MOC_LITERAL(10, 88, 15), // "handleAppendLog"
-QT_MOC_LITERAL(11, 104, 15), // "handleUpdateDoc"
-QT_MOC_LITERAL(12, 120, 26), // "handleAccumulateValidation"
-QT_MOC_LITERAL(13, 147, 19), // "handleUpdateAddress"
-QT_MOC_LITERAL(14, 167, 9) // "modifyDoc"
+QT_MOC_LITERAL(4, 22, 15), // "updateRemoteDoc"
+QT_MOC_LITERAL(5, 38, 7), // "command"
+QT_MOC_LITERAL(6, 46, 20), // "accumulateValidation"
+QT_MOC_LITERAL(7, 67, 4), // "hash"
+QT_MOC_LITERAL(8, 72, 13), // "updateAddress"
+QT_MOC_LITERAL(9, 86, 7), // "address"
+QT_MOC_LITERAL(10, 94, 15), // "handleAppendLog"
+QT_MOC_LITERAL(11, 110, 21), // "handleUpdateRemoteDoc"
+QT_MOC_LITERAL(12, 132, 26), // "handleAccumulateValidation"
+QT_MOC_LITERAL(13, 159, 19), // "handleUpdateAddress"
+QT_MOC_LITERAL(14, 179, 11) // "UIModifyDoc"
 
     },
-    "dialog\0appendLog\0\0log\0updateDoc\0command\0"
-    "accumulateValidation\0hash\0updateAddress\0"
-    "address\0handleAppendLog\0handleUpdateDoc\0"
-    "handleAccumulateValidation\0"
-    "handleUpdateAddress\0modifyDoc"
+    "dialog\0appendLog\0\0log\0updateRemoteDoc\0"
+    "command\0accumulateValidation\0hash\0"
+    "updateAddress\0address\0handleAppendLog\0"
+    "handleUpdateRemoteDoc\0handleAccumulateValidation\0"
+    "handleUpdateAddress\0UIModifyDoc"
 };
 #undef QT_MOC_LITERAL
 
@@ -105,14 +105,14 @@ void dialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->appendLog((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 1: _t->updateDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 1: _t->updateRemoteDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 2: _t->accumulateValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 3: _t->updateAddress((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 4: _t->handleAppendLog((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 5: _t->handleUpdateDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 5: _t->handleUpdateRemoteDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 6: _t->handleAccumulateValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 7: _t->handleUpdateAddress((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 8: _t->modifyDoc(); break;
+        case 8: _t->UIModifyDoc(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -126,7 +126,7 @@ void dialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         }
         {
             typedef void (dialog::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&dialog::updateDoc)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&dialog::updateRemoteDoc)) {
                 *result = 1;
                 return;
             }
@@ -192,7 +192,7 @@ void dialog::appendLog(const QString & _t1)
 }
 
 // SIGNAL 1
-void dialog::updateDoc(const QString & _t1)
+void dialog::updateRemoteDoc(const QString & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
@@ -213,7 +213,7 @@ void dialog::updateAddress(const QString & _t1)
 }
 struct qt_meta_stringdata_dialog_controller_t {
     QByteArrayData data[14];
-    char stringdata0[226];
+    char stringdata0[238];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -226,23 +226,23 @@ QT_MOC_LITERAL(0, 0, 17), // "dialog_controller"
 QT_MOC_LITERAL(1, 18, 20), // "resultReadyAppendLog"
 QT_MOC_LITERAL(2, 39, 0), // ""
 QT_MOC_LITERAL(3, 40, 3), // "log"
-QT_MOC_LITERAL(4, 44, 20), // "resultReadyUpdateDoc"
-QT_MOC_LITERAL(5, 65, 7), // "command"
-QT_MOC_LITERAL(6, 73, 31), // "resultReadyAccumulateValidation"
-QT_MOC_LITERAL(7, 105, 4), // "hash"
-QT_MOC_LITERAL(8, 110, 24), // "resultReadyUpdateAddress"
-QT_MOC_LITERAL(9, 135, 7), // "address"
-QT_MOC_LITERAL(10, 143, 16), // "operateAppendLog"
-QT_MOC_LITERAL(11, 160, 16), // "operateUpdateDoc"
-QT_MOC_LITERAL(12, 177, 27), // "operateAccumulateValidation"
-QT_MOC_LITERAL(13, 205, 20) // "operateUpdateAddress"
+QT_MOC_LITERAL(4, 44, 26), // "resultReadyUpdateRemoteDoc"
+QT_MOC_LITERAL(5, 71, 7), // "command"
+QT_MOC_LITERAL(6, 79, 31), // "resultReadyAccumulateValidation"
+QT_MOC_LITERAL(7, 111, 4), // "hash"
+QT_MOC_LITERAL(8, 116, 24), // "resultReadyUpdateAddress"
+QT_MOC_LITERAL(9, 141, 7), // "address"
+QT_MOC_LITERAL(10, 149, 16), // "operateAppendLog"
+QT_MOC_LITERAL(11, 166, 22), // "operateUpdateRemoteDoc"
+QT_MOC_LITERAL(12, 189, 27), // "operateAccumulateValidation"
+QT_MOC_LITERAL(13, 217, 20) // "operateUpdateAddress"
 
     },
     "dialog_controller\0resultReadyAppendLog\0"
-    "\0log\0resultReadyUpdateDoc\0command\0"
+    "\0log\0resultReadyUpdateRemoteDoc\0command\0"
     "resultReadyAccumulateValidation\0hash\0"
     "resultReadyUpdateAddress\0address\0"
-    "operateAppendLog\0operateUpdateDoc\0"
+    "operateAppendLog\0operateUpdateRemoteDoc\0"
     "operateAccumulateValidation\0"
     "operateUpdateAddress"
 };
@@ -295,11 +295,11 @@ void dialog_controller::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->resultReadyAppendLog((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 1: _t->resultReadyUpdateDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 1: _t->resultReadyUpdateRemoteDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 2: _t->resultReadyAccumulateValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 3: _t->resultReadyUpdateAddress((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 4: _t->operateAppendLog((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 5: _t->operateUpdateDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 5: _t->operateUpdateRemoteDoc((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 6: _t->operateAccumulateValidation((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 7: _t->operateUpdateAddress((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
@@ -315,7 +315,7 @@ void dialog_controller::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         }
         {
             typedef void (dialog_controller::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&dialog_controller::resultReadyUpdateDoc)) {
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&dialog_controller::resultReadyUpdateRemoteDoc)) {
                 *result = 1;
                 return;
             }
@@ -381,7 +381,7 @@ void dialog_controller::resultReadyAppendLog(const QString & _t1)
 }
 
 // SIGNAL 1
-void dialog_controller::resultReadyUpdateDoc(const QString & _t1)
+void dialog_controller::resultReadyUpdateRemoteDoc(const QString & _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);

@@ -5,7 +5,6 @@
 //  Created by Chung-kaiYang on 01/13/18.
 //
 
-#include <iostream>
 #include <assert.h>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QScrollArea>
@@ -28,6 +27,7 @@ dialog::dialog(QWidget *parent, QApplication* app)
 :QDialog(parent), m_app(app)
 {
     assert(m_app);
+    m_preDocSize = 0;
     m_mainLayout = new QGridLayout(this);
     m_loadingMovie = new QMovie("/Users/CK-Yang/Qt/image/loading.gif");
 //    m_tickPix = new QPixmap("/Users/CK-Yang/Qt/image/tick.png");
@@ -42,7 +42,7 @@ dialog::dialog(QWidget *parent, QApplication* app)
     m_blockChainListLayout->addWidget(m_docArea);
     m_blockChainListLayout->setStretch(0, 1);
     m_blockChainListLayout->setStretch(1, 10);
-    connect(m_docArea, SIGNAL(textChanged()), this, SLOT(modifyDoc()));
+    connect(m_docArea, SIGNAL(textChanged()), this, SLOT(UIModifyDoc()));
 
     m_logLabel = new QLabel("QT initialized.");
     m_logLabel->setStyleSheet("QLabel { background-color:transparent; color : lime; }");
@@ -62,8 +62,8 @@ dialog::dialog(QWidget *parent, QApplication* app)
 
     connect(this, SIGNAL(appendLog(QString)), m_controller, SLOT(operateAppendLog(QString)));
     connect(m_controller, SIGNAL(resultReadyAppendLog(QString)), this, SLOT(handleAppendLog(QString)));
-    connect(this, SIGNAL(updateDoc(QString)), m_controller, SLOT(operateUpdateDoc(QString)));
-    connect(m_controller, SIGNAL(resultReadyUpdateDoc(QString)), this, SLOT(handleUpdateDoc(QString)));
+    connect(this, SIGNAL(updateRemoteDoc(QString)), m_controller, SLOT(operateUpdateRemoteDoc(QString)));
+    connect(m_controller, SIGNAL(resultReadyUpdateRemoteDoc(QString)), this, SLOT(handleUpdateRemoteDoc(QString)));
     connect(this, SIGNAL(accumulateValidation(QString)), m_controller, SLOT(operateAccumulateValidation(QString)));
     connect(m_controller, SIGNAL(resultReadyAccumulateValidation(QString)), this, SLOT(handleAccumulateValidation(QString)));
     connect(this, SIGNAL(updateAddress(QString)), m_controller, SLOT(operateUpdateAddress(QString)));
@@ -87,19 +87,18 @@ dialog::~dialog()
     delete(m_controller);
 }
 
-void dialog::modifyDoc()
+void dialog::UIModifyDoc()
 {
     if(m_docArea->toPlainText().length() == m_preDocSize)
         return;
-    
+
     string message = GetCommand((m_docArea->toPlainText().length() > m_preDocSize) ? DIALOG_COMMAND_TYPE_ADD : DIALOG_COMMAND_TYPE_REMOVE, m_docArea->textCursor().position(), string(1, m_docArea->toPlainText().toUtf8().constData()[m_docArea->textCursor().position() - 1]));
 
     blockChain* blockchain = factory::GetBlockChain();
     blockchain->addBlock(blockchain->generateNextBlock(message));
-//    m_validatingBlockHash[newBlock->getHash()] = make_pair(0, newBlock);
     talk::Broadcast(string(REMOTE_COMMAND_NEW) + " " + blockchain->getLatestBlock()->getBlockInfo());
-
     m_preDocSize = m_docArea->toPlainText().length();
+
 /*
 //    m_addBlockLabel->setMovie(m_loadingMovie);
 //    m_loadingMovie->start();
@@ -135,13 +134,14 @@ void dialog::handleAccumulateValidation(const QString& hash)
 */
 }
 
-void dialog::handleUpdateDoc(const QString& command)
+void dialog::handleUpdateRemoteDoc(const QString& command)
 {
     DIALOG_COMMAND_TYPE type;
     int position;
     string msg;
 
     RetrieveCommand(command.toUtf8().constData(), type, position, msg);
+    bool bOldState = m_docArea->blockSignals(true);
 
     switch(type)
     {
@@ -173,6 +173,7 @@ void dialog::handleUpdateDoc(const QString& command)
             break;
     }
 
+    m_docArea->blockSignals(bOldState);
 /*
     m_docArea->setText(factory::GetBlockChain()->getChainInfo(true).c_str());
     m_docArea->adjustSize();
@@ -264,9 +265,9 @@ void dialog_controller::operateAppendLog(const QString& log)
     emit resultReadyAppendLog(log);
 }
 
-void dialog_controller::operateUpdateDoc(const QString& command)
+void dialog_controller::operateUpdateRemoteDoc(const QString& command)
 {
-    emit resultReadyUpdateDoc(command);
+    emit resultReadyUpdateRemoteDoc(command);
 }
 
 void dialog_controller::operateAccumulateValidation(const QString& hash)

@@ -27,7 +27,7 @@ public:
     time_t getTimeStamp() {return m_timeStamp;}
     string getData() {return m_data;}
     string getHash() {return m_hash;}
-    string getBlockInfo(bool bTransferHuman = false){return to_string(m_index) + " " + (bTransferHuman ? "" : (m_preHash + " ")) + (bTransferHuman ? (to_string(gmtime(&m_timeStamp)->tm_year + 1900) + "/" + to_string(gmtime(&m_timeStamp)->tm_mon + 1) + "/" + to_string(gmtime(&m_timeStamp)->tm_mday) + "," + to_string(gmtime(&m_timeStamp)->tm_hour) + ":" + to_string(gmtime(&m_timeStamp)->tm_min) + ":" + to_string(gmtime(&m_timeStamp)->tm_sec)) : to_string(m_timeStamp)) + " " + m_data + " " + m_hash;}
+    string getBlockInfo(){return to_string(m_index) + " " + m_preHash + " " + to_string(m_timeStamp) + " " + m_data + " " + m_hash;}
 
 private:
     int m_index;

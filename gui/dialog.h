@@ -52,19 +52,19 @@ public:
 
 signals:
     void appendLog(const QString& log);
-    void updateDoc(const QString& command);
+    void updateRemoteDoc(const QString& command);
     void accumulateValidation(const QString& hash);
     void updateAddress(const QString& address);
 
 // Below functions are Qt internal only, don't call them directly.
 public slots:
     void handleAppendLog(const QString& log);
-    void handleUpdateDoc(const QString& command);
+    void handleUpdateRemoteDoc(const QString& command);
     void handleAccumulateValidation(const QString& hash);
     void handleUpdateAddress(const QString& address);
 
 private slots:
-    void modifyDoc();
+    void UIModifyDoc();
 
 private:
     QLabel *m_blockChainTitleLabel, *m_logLabel;
@@ -88,13 +88,13 @@ class dialog_controller : public QObject
     
 public slots:
     void operateAppendLog(const QString& log);
-    void operateUpdateDoc(const QString& command);
+    void operateUpdateRemoteDoc(const QString& command);
     void operateAccumulateValidation(const QString& hash);
     void operateUpdateAddress(const QString& address);
 
 signals:
     void resultReadyAppendLog(const QString& log);
-    void resultReadyUpdateDoc(const QString& command);
+    void resultReadyUpdateRemoteDoc(const QString& command);
     void resultReadyAccumulateValidation(const QString& hash);
     void resultReadyUpdateAddress(const QString& address);
 };

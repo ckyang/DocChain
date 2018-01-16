@@ -42,8 +42,6 @@ int main(int argc, char *argv[]){
 
     dialog->appendLog("Welcome to blockchain demo program @ Clark Yang!");
     factory::GetBlockChain();
-//    string command = dialog::GetCommand(dialog::DIALOG_COMMAND_TYPE_UPDATEALL, 0, "");
-//    dialog->updateDoc(command.c_str());
 
     talk::BroadcastPublicKey();
     talk::Broadcast(REMOTE_COMMAND_GET_PUBKEY);

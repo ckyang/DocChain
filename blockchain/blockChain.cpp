@@ -38,7 +38,7 @@ blockChain::blockChain(bool bGenerateGenesis)
 
 block* blockChain::getGenesisBlock()
 {
-    return new block(0, "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7", 1513598789, "Clark_Chain_Genesis_Block", "a8b407b3c63fed132d8313960335c63c25a705e4fe558ba2e70e5bde6e10abfc");
+    return new block(0, "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7", 1513598789, dialog::GetCommand(dialog::DIALOG_COMMAND_TYPE_UPDATEALL, 0, ""), "cbe8af26e86a0a0e88f91c30b4b12239f7ac2b1bf006b647d05711234f82ef35");
 }
 
 block* blockChain::generateNextBlock(const string& data)
@@ -121,18 +121,20 @@ void blockChain::replaceChain(blockChain * const newChain)
 
     if(!IsValidChain(newChain) || newChain->length() <= len)
     {
-        dialog->appendLog("Received blockchain invalid, not replaced.");
+        dialog->appendLog("New blockchain is invalid or shorter than current one, not replaced.");
         return;
     }
 
-    dialog->appendLog("Received blockchain is valid. Replacing current blockchain with received blockchain.");
+    dialog->appendLog("New blockchain is valid. Replacing current blockchain with received blockchain.");
 
     removeAll();
+    stack<block*> s;
 
     block* cur = newChain->getLatestBlock();
 
     while(cur)
     {
+        s.push(cur);
         block *pre = newChain->getBlock(cur->getPreHash());
         blockHash[cur->getHash()] = new block(cur);
         tail = !tail ? blockHash[cur->getHash()] : tail;
@@ -140,19 +142,19 @@ void blockChain::replaceChain(blockChain * const newChain)
         cur = pre;
     }
 
+    while(!s.empty())
+    {
+        factory::GetDialog()->updateRemoteDoc(s.top()->getData().c_str());
+        s.pop();
+    }
+
     len = newChain->length();
 }
 
-string blockChain::getChainInfo(const bool bWithTitle)
+string blockChain::getChainInfo()
 {
     string res;
     char wrap = ',';
-
-    if(bWithTitle)
-    {
-        res = "Index TimeStamp Data Hash";
-        wrap = '\n';
-    }
 
     block* cur = getLatestBlock();
 
@@ -161,7 +163,7 @@ string blockChain::getChainInfo(const bool bWithTitle)
         if(!res.empty())
             res += wrap;
 
-        res += cur->getBlockInfo(bWithTitle);
+        res += cur->getBlockInfo();
         cur = getBlock(cur->getPreHash());
     }
 

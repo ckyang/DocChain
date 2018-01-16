@@ -34,7 +34,6 @@ void talk::Response(int sock_fd, short event, void *arg)
     (void)arg;
 
     struct sockaddr_in client_addr;
-    dialog* dialog = factory::GetDialog();
     static char readBuf[MAX_BUF_SIZE];
     memset(readBuf, '\0', MAX_BUF_SIZE);
     int len = 0;
@@ -102,15 +101,15 @@ void talk::Response(int sock_fd, short event, void *arg)
 
         //If this block (coming from remote) is valid, add this block.
         //If it's invalid, request the whole blockchain.
-//        if(blockChain::IsValidBlock(index, preHash, timeStamp, data, hash, blockChainObject->getLatestBlock()))
+        if(blockChain::IsValidBlock(index, preHash, timeStamp, data, hash, blockChainObject->getLatestBlock()))
         {
             factory::GetBlockChain()->addBlock(new block(index, preHash, timeStamp, data, hash));
-            factory::GetDialog()->updateDoc(QString(data.c_str()));
+            factory::GetDialog()->updateRemoteDoc(QString(data.c_str()));
         }
-//        else
+        else
         {
-//            string writeBuf = REMOTE_COMMAND_GET_ALL;
-//            SendMsg(sock_fd, &client_addr, writeBuf);
+            string writeBuf = REMOTE_COMMAND_GET_ALL;
+            SendMsg(sock_fd, &client_addr, writeBuf);
         }
 
         return;
@@ -147,16 +146,7 @@ void talk::Response(int sock_fd, short event, void *arg)
         string tmp(readBuf + strlen(REMOTE_COMMAND_REPLY_ALL) + 1);
         tmp[len - strlen(REMOTE_COMMAND_REPLY_ALL)] = '\0';
         blockChain* newChain = blockChain::GenerateChain(tmp);
-
-        //If other node's blockchain is longer than current, use this one
-        if(newChain->length() > blockChainObject->length())
-        {
-            blockChainObject->replaceChain(newChain);
-            //TBD, retrieve each command and recover original article
-//            string command = dialog::GetCommand(dialog::DIALOG_COMMAND_TYPE_UPDATEALL, 0, tmp);
-//            factory::GetDialog()->updateDoc(command.c_str());
-        }
-
+        blockChainObject->replaceChain(newChain);
         delete newChain;
         return;
     }
