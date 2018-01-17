@@ -21,8 +21,6 @@
 #include "block.h"
 #include "crypto.h"
 
-#define VELIDATION_NUMBER 2
-
 dialog::dialog(QWidget *parent, QApplication* app)
 :QDialog(parent), m_app(app)
 {
@@ -42,7 +40,7 @@ dialog::dialog(QWidget *parent, QApplication* app)
     m_blockChainListLayout->addWidget(m_docArea);
     m_blockChainListLayout->setStretch(0, 1);
     m_blockChainListLayout->setStretch(1, 10);
-    connect(m_docArea, SIGNAL(textChanged()), this, SLOT(UIModifyDoc()));
+    connect(m_docArea, SIGNAL(textChanged()), this, SLOT(modifyUIDoc()));
 
     m_logLabel = new QLabel("QT initialized.");
     m_logLabel->setStyleSheet("QLabel { background-color:transparent; color : lime; }");
@@ -64,8 +62,6 @@ dialog::dialog(QWidget *parent, QApplication* app)
     connect(m_controller, SIGNAL(resultReadyAppendLog(QString)), this, SLOT(handleAppendLog(QString)));
     connect(this, SIGNAL(updateRemoteDoc(QString)), m_controller, SLOT(operateUpdateRemoteDoc(QString)));
     connect(m_controller, SIGNAL(resultReadyUpdateRemoteDoc(QString)), this, SLOT(handleUpdateRemoteDoc(QString)));
-    connect(this, SIGNAL(accumulateValidation(QString)), m_controller, SLOT(operateAccumulateValidation(QString)));
-    connect(m_controller, SIGNAL(resultReadyAccumulateValidation(QString)), this, SLOT(handleAccumulateValidation(QString)));
     connect(this, SIGNAL(updateAddress(QString)), m_controller, SLOT(operateUpdateAddress(QString)));
     connect(m_controller, SIGNAL(resultReadyUpdateAddress(QString)), this, SLOT(handleUpdateAddress(QString)));
 
@@ -87,7 +83,7 @@ dialog::~dialog()
     delete(m_controller);
 }
 
-void dialog::UIModifyDoc()
+void dialog::modifyUIDoc()
 {
     if(m_docArea->toPlainText().length() == m_preDocSize)
         return;
@@ -99,39 +95,7 @@ void dialog::UIModifyDoc()
     talk::Broadcast(string(REMOTE_COMMAND_NEW) + " " + blockchain->getLatestBlock()->getBlockInfo());
     m_preDocSize = m_docArea->toPlainText().length();
 
-/*
-//    m_addBlockLabel->setMovie(m_loadingMovie);
-//    m_loadingMovie->start();
-
-    m_addBlockLabel->setText("Validating...");
-    block* newBlock = factory::GetBlockChain()->generateNextBlock(m_addBlockNameEdit->text().toUtf8().constData());
-    m_validatingBlockHash[newBlock->getHash()] = make_pair(0, newBlock);
-    talk::Broadcast(string(REMOTE_COMMAND_ASK_VERIFY) + " " + newBlock->getBlockInfo());
-    m_addBlockNameEdit->clear();
-*/
-}
-
-void dialog::handleAccumulateValidation(const QString& hash)
-{
-/*
-    string curHash = hash.toUtf8().constData();
-    if(m_validatingBlockHash.find(curHash) == m_validatingBlockHash.end())
-        return;
-
-    ++m_validatingBlockHash[curHash].first;
-
-    if(VELIDATION_NUMBER == m_validatingBlockHash[curHash].first)
-    {
-        factory::GetBlockChain()->addBlock(m_validatingBlockHash[curHash].second);
-        m_validatingBlockHash.erase(curHash);
-        updateBlockChainList();
-//        m_addBlockLabel->setText("OK!");
-        talk::Broadcast(string(REMOTE_COMMAND_NEW) + " " + factory::GetBlockChain()->getLatestBlock()->getBlockInfo());
-        //    m_addBlockLabel->setPixmap(*m_tickPix);
-    }
-//    else
-//        m_addBlockLabel->setText(QString("+").append(to_string(m_validatingBlockHash[curHash].first).c_str()));
-*/
+    resumeOriginalColor();
 }
 
 void dialog::handleUpdateRemoteDoc(const QString& command)
@@ -139,8 +103,12 @@ void dialog::handleUpdateRemoteDoc(const QString& command)
     DIALOG_COMMAND_TYPE type;
     int position;
     string msg;
+    static QTextCharFormat addFormat;
+    addFormat.setForeground(QBrush(QColor("red")));
 
     RetrieveCommand(command.toUtf8().constData(), type, position, msg);
+    resumeOriginalColor();
+
     bool bOldState = m_docArea->blockSignals(true);
 
     switch(type)
@@ -150,7 +118,8 @@ void dialog::handleUpdateRemoteDoc(const QString& command)
             QTextCursor cursor = m_docArea->textCursor();
             cursor.setPosition(position - 1);
             m_docArea->setTextCursor(cursor);
-            m_docArea->insertPlainText(msg.c_str());
+            cursor.setCharFormat(addFormat);
+            cursor.insertText(msg.c_str());
             break;
         }
 
@@ -174,14 +143,6 @@ void dialog::handleUpdateRemoteDoc(const QString& command)
     }
 
     m_docArea->blockSignals(bOldState);
-/*
-    m_docArea->setText(factory::GetBlockChain()->getChainInfo(true).c_str());
-    m_docArea->adjustSize();
-//    m_blockChainScrollArea->widget()->resize(m_blockChainScrollArea->widget()->sizeHint());
-    m_app->processEvents();
-//    m_blockChainScrollArea->verticalScrollBar()->setValue(m_blockChainScrollArea->verticalScrollBar()->minimum());
-//    m_blockChainScrollArea->horizontalScrollBar()->setValue(m_blockChainScrollArea->horizontalScrollBar()->minimum());
-*/
 }
 
 void dialog::handleAppendLog(const QString& log)
@@ -260,6 +221,22 @@ void dialog::RetrieveCommand(const string& command, DIALOG_COMMAND_TYPE& type, i
     msg = command.substr(5);
 }
 
+void dialog::resumeOriginalColor()
+{
+    bool bOldState = m_docArea->blockSignals(true);
+    static QTextCharFormat oriFormat;
+    oriFormat.setForeground(QBrush(QColor("white")));
+    QTextCursor cursor = m_docArea->textCursor();
+    int oldPos = cursor.position();
+    cursor.setPosition(0);
+    cursor.movePosition(QTextCursor::Right, QTextCursor::KeepAnchor, m_docArea->toPlainText().length());
+    cursor.setCharFormat(oriFormat);
+    cursor.clearSelection();
+    cursor.setPosition(oldPos);
+    m_docArea->setTextCursor(cursor);
+    m_docArea->blockSignals(bOldState);
+}
+
 void dialog_controller::operateAppendLog(const QString& log)
 {
     emit resultReadyAppendLog(log);
@@ -268,11 +245,6 @@ void dialog_controller::operateAppendLog(const QString& log)
 void dialog_controller::operateUpdateRemoteDoc(const QString& command)
 {
     emit resultReadyUpdateRemoteDoc(command);
-}
-
-void dialog_controller::operateAccumulateValidation(const QString& hash)
-{
-    emit resultReadyAccumulateValidation(hash);
 }
 
 void dialog_controller::operateUpdateAddress(const QString& address)

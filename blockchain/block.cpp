@@ -42,6 +42,10 @@ void block::TransferInfo(const string& totalInfo, int& index, string& preHash, t
 
     info = info.substr(found + 1);
     found = info.find(" ");
+
+    if(info[found + 1] == ' ')
+        ++found;
+
     data = info.substr(0, found);
     hash = info.substr(found + 1);
 }
