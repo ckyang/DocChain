@@ -172,6 +172,17 @@ void talk::Response(int sock_fd, short event, void *arg)
         unsigned char* pubKey = (unsigned char*)malloc(sizeof(unsigned char) * pubKeyLen);
         memcpy(pubKey, readBuf + strlen(REMOTE_COMMAND_REPLY_PUBKEY) + 1 + crypto->getAddress().size(), pubKeyLen);
         pubKeyHash[senderAddress] = make_pair(pubKey, pubKeyLen);
+        QString remoteAddress;
+
+        for(auto p : pubKeyHash)
+        {
+            if(!remoteAddress.isEmpty())
+                remoteAddress.append(" ");
+
+            remoteAddress.append(p.first.c_str());
+        }
+
+        factory::GetDialog()->updateRemoteAddress(remoteAddress);
         free(senderAddress);
         return;
     }

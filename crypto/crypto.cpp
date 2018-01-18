@@ -104,7 +104,7 @@ const string& crypto::getAddress()
         getPublicKey(pubKey, pubKeyLen);
         string tmp = SHA256((char*)pubKey, pubKeyLen);
         m_address = RIPEMD160(tmp.c_str(), (int)tmp.size());
-        factory::GetDialog()->updateAddress(m_address.c_str());
+        factory::GetDialog()->updateLocalAddress(m_address.c_str());
     }
 
     return m_address;

@@ -52,20 +52,22 @@ public:
 signals:
     void appendLog(const QString& log);
     void updateRemoteDoc(const QString& command);
-    void updateAddress(const QString& address);
+    void updateLocalAddress(const QString& address);
+    void updateRemoteAddress(const QString& address);
 
 // Below functions are Qt internal only, don't call them directly.
 public slots:
     void handleAppendLog(const QString& log);
     void handleUpdateRemoteDoc(const QString& command);
-    void handleUpdateAddress(const QString& address);
+    void handleUpdateLocalAddress(const QString& address);
+    void handleUpdateRemoteAddress(const QString& address);
 
 private slots:
     void modifyUIDoc();
     void resumeOriginalColor();
 
 private:
-    QLabel *m_blockChainTitleLabel, *m_logLabel;
+    QLabel *m_localAddressLabel, *m_remoteAddressLabel, *m_logLabel;
     QTextEdit *m_docArea;
     QApplication *m_app;
     QGridLayout *m_mainLayout;
@@ -86,12 +88,14 @@ class dialog_controller : public QObject
 public slots:
     void operateAppendLog(const QString& log);
     void operateUpdateRemoteDoc(const QString& command);
-    void operateUpdateAddress(const QString& address);
+    void operateUpdateLocalAddress(const QString& address);
+    void operateUpdateRemoteAddress(const QString& address);
 
 signals:
     void resultReadyAppendLog(const QString& log);
     void resultReadyUpdateRemoteDoc(const QString& command);
-    void resultReadyUpdateAddress(const QString& address);
+    void resultReadyUpdateLocalAddress(const QString& address);
+    void resultReadyUpdateRemoteAddress(const QString& address);
 };
 
 #endif /* dialog_h */

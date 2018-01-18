@@ -33,13 +33,16 @@ dialog::dialog(QWidget *parent, QApplication* app)
     m_tickPix = new QPixmap(QCoreApplication::applicationDirPath() + "/tick.png");
 
     m_blockChainListLayout = new QVBoxLayout(this);
-    m_blockChainTitleLabel = new QLabel("Address: []");
+    m_localAddressLabel = new QLabel("* []");
+    m_remoteAddressLabel = new QLabel("");
     m_docArea = new QTextEdit("");
     m_docArea->setStyleSheet("color:white; background-color:#995599; font:italic");
-    m_blockChainListLayout->addWidget(m_blockChainTitleLabel);
+    m_blockChainListLayout->addWidget(m_localAddressLabel);
+    m_blockChainListLayout->addWidget(m_remoteAddressLabel);
     m_blockChainListLayout->addWidget(m_docArea);
     m_blockChainListLayout->setStretch(0, 1);
-    m_blockChainListLayout->setStretch(1, 10);
+    m_blockChainListLayout->setStretch(1, 1);
+    m_blockChainListLayout->setStretch(2, 10);
     connect(m_docArea, SIGNAL(textChanged()), this, SLOT(modifyUIDoc()));
 
     m_logLabel = new QLabel("QT initialized.");
@@ -62,8 +65,10 @@ dialog::dialog(QWidget *parent, QApplication* app)
     connect(m_controller, SIGNAL(resultReadyAppendLog(QString)), this, SLOT(handleAppendLog(QString)));
     connect(this, SIGNAL(updateRemoteDoc(QString)), m_controller, SLOT(operateUpdateRemoteDoc(QString)));
     connect(m_controller, SIGNAL(resultReadyUpdateRemoteDoc(QString)), this, SLOT(handleUpdateRemoteDoc(QString)));
-    connect(this, SIGNAL(updateAddress(QString)), m_controller, SLOT(operateUpdateAddress(QString)));
-    connect(m_controller, SIGNAL(resultReadyUpdateAddress(QString)), this, SLOT(handleUpdateAddress(QString)));
+    connect(this, SIGNAL(updateLocalAddress(QString)), m_controller, SLOT(operateUpdateLocalAddress(QString)));
+    connect(m_controller, SIGNAL(resultReadyUpdateLocalAddress(QString)), this, SLOT(handleUpdateLocalAddress(QString)));
+    connect(this, SIGNAL(updateRemoteAddress(QString)), m_controller, SLOT(operateUpdateRemoteAddress(QString)));
+    connect(m_controller, SIGNAL(resultReadyUpdateRemoteAddress(QString)), this, SLOT(handleUpdateRemoteAddress(QString)));
 
     workerThread.start();
 }
@@ -72,7 +77,8 @@ dialog::~dialog()
 {
     delete(m_mainLayout);
     delete(m_blockChainListLayout);
-    delete(m_blockChainTitleLabel);
+    delete(m_localAddressLabel);
+    delete(m_remoteAddressLabel);
     delete(m_docArea);
     delete(m_logLabel);
     delete(m_logScrollArea);
@@ -155,9 +161,20 @@ void dialog::handleAppendLog(const QString& log)
     m_logScrollArea->horizontalScrollBar()->setValue(m_logScrollArea->horizontalScrollBar()->minimum());
 }
 
-void dialog::handleUpdateAddress(const QString& address)
+void dialog::handleUpdateLocalAddress(const QString& address)
 {
-    m_blockChainTitleLabel->setText(QString("Address: [").append(address).append("]"));
+    m_localAddressLabel->setText(QString("* [").append(address).append("]"));
+}
+
+void dialog::handleUpdateRemoteAddress(const QString& address)
+{
+    QStringList addressList = address.split(' ');
+    QString add;
+
+    for(auto a : addressList)
+        add.append(" - [").append(a).append("]");
+
+    m_remoteAddressLabel->setText(add);
 }
 
 string dialog::GetCommand(DIALOG_COMMAND_TYPE type, int position, string msg)
@@ -247,7 +264,12 @@ void dialog_controller::operateUpdateRemoteDoc(const QString& command)
     emit resultReadyUpdateRemoteDoc(command);
 }
 
-void dialog_controller::operateUpdateAddress(const QString& address)
+void dialog_controller::operateUpdateLocalAddress(const QString& address)
 {
-    emit resultReadyUpdateAddress(address);
+    emit resultReadyUpdateLocalAddress(address);
+}
+
+void dialog_controller::operateUpdateRemoteAddress(const QString& address)
+{
+    emit resultReadyUpdateRemoteAddress(address);
 }
