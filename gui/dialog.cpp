@@ -172,7 +172,12 @@ void dialog::handleUpdateRemoteAddress(const QString& address)
     QString add;
 
     for(auto a : addressList)
+    {
+        if(!add.isEmpty())
+            add.append("\n");
+
         add.append(" - [").append(a).append("]");
+    }
 
     m_remoteAddressLabel->setText(add);
 }
