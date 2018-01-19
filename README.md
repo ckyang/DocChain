@@ -2,7 +2,7 @@
 
 Like Google Docs, this program provides a blockchain-based document-sharing App.
 
-1. Implemeneted by Qt, OpenSSL and asynchronous libevent on Xcode.
+1. Implemented by Qt, OpenSSL and asynchronous libevent on Xcode.
 
 2. Decentralized distributed database with incorruptible chain.
 
