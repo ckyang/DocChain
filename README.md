@@ -12,6 +12,19 @@ Like Google Docs, this program provides a blockchain-based document-sharing App.
 
 5. Includes following features: "Publish Public Key", "Publish Address", "Sign Network Protocol", "Verify Remote Block", and "Encode Document Modification."
 
+# Scenario
+A new joined device will exchange public keys with every online devices.
+![alt text](https://user-images.githubusercontent.com/13886288/35181722-338dea42-fe02-11e7-97dc-f1aeb9f69954.png)
+
+When one device modifies document, updates its own blockchain and broadcasts the modification.
+
+Then every devices validate the modification with their own blockchains.
+![alt text](https://user-images.githubusercontent.com/13886288/35181646-c85db744-fe00-11e7-8df0-0d1841b7267a.png)
+
+If a device’s validation failed, requests for the remote blockchain, then replaces its own blockchain and reconstruct whole document.
+![alt text](https://user-images.githubusercontent.com/13886288/35181648-ca5547a6-fe00-11e7-9a63-e4eca63f9a41.png)
+
+
 # Overview
 ![alt text](https://user-images.githubusercontent.com/13886288/35134627-7d159160-fd12-11e7-961b-3b8bda29aab4.png)
 
